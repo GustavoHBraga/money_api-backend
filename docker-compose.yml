@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  money-backend:
+    privileged: true 
+    build: .
+    container_name: moneyApi
+    hostname: moneyapi-prod
+    restart: always
+    environment:
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_PORT=${DATABASE_PORT}
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+    ports:
+      - "8002:8080"
