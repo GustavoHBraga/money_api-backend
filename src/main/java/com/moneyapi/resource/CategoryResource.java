@@ -21,7 +21,7 @@ import com.moneyapi.repository.CategoryRepository;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-s
+
 @RestController
 @RequestMapping("money-backend/category")
 public class CategoryResource {
