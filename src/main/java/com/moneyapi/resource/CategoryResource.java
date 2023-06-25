@@ -23,7 +23,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/category")
+@RequestMapping("money-backend/category")
 public class CategoryResource {
 	
 	@Autowired
