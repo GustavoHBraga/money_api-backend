@@ -8,7 +8,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
@@ -24,9 +23,10 @@ public class moneyApiExceptionHandler extends ResponseEntityExceptionHandler {
 	@Autowired
 	private MessageSource messageSource;
 
+	
 	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
-			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
 
 		// This message is get in file "messages.properties"
 		String userMessage = messageSource.getMessage("message.fail", null, LocaleContextHolder.getLocale());
@@ -54,7 +54,7 @@ public class moneyApiExceptionHandler extends ResponseEntityExceptionHandler {
 	 */
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-	        HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+	        HttpHeaders headers, HttpStatus status, WebRequest request) {
 
 	    // Checks if there is more than one error and groups them in a list
 	    List<Error> errors = createErrorList(ex.getBindingResult());
