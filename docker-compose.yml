@@ -8,9 +8,28 @@ services:
     hostname: moneyapi-prod
     restart: always
     environment:
-      - DATABASE_HOST=${DATABASE_HOST}
-      - DATABASE_PORT=${DATABASE_PORT}
-      - DATABASE_USERNAME=${DATABASE_USERNAME}
-      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_HOST=money_sql
+      - DATABASE_PORT=8001
+      - DATABASE_USERNAME=prod
+      - DATABASE_PASSWORD=root
     ports:
       - "8002:8080"
+    depends_on:
+      - money_sql
+    networks:
+      - sonarnet
+
+  money_sql:
+    image: mysql:8.0.1
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=money_api
+      - MYSQL_USER=prod
+      - MYSQL_PASSWORD=root
+    ports:
+      - "8001:3306"
+    networks:
+      - sonarnet
+
+networks:
+  sonarnet:

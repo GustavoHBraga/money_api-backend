@@ -33,6 +33,7 @@ public class CategoryResource {
 	@GetMapping
 	public ResponseEntity<?> listAll(){
 		List<Category> categories = categoryRepository.findAll();
+		List<Category> categories = categoryRepository.findAll();
 		return !categories.isEmpty() ? ResponseEntity.ok(categories) : ResponseEntity.noContent().build(); 
 	}
 	
