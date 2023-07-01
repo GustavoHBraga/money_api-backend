@@ -16,10 +16,21 @@ pipeline {
                 }
             }
         }
-        stage("Quality Gate"){
+        stage('Quality Gate'){
             steps{
                 sleep(20)
                 waitForQualityGate abortPipeline: true
+            }
+        }
+        stage('Deploy backend'){
+            steps {
+                deploy adapters: [tomcat9(credentialsId: 'de45c837-4455-4bfb-878d-72508a227886', path: '', url: 'http://localhost:8888')], contextPath: 'money-backend', war: 'target/money-api-1.0.0.war'
+            }
+        }
+        stage('Test API with Rest Assured') {
+            steps{
+                git branch: 'main', url: 'https://github.com/GustavoHBraga/money-api-rest-assured.git'
+                bat 'mvn test'
             }
         }
     }
