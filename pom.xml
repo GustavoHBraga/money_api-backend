@@ -53,6 +53,12 @@
 		    <artifactId>spring-boot-starter-tomcat</artifactId>
 		    <scope>provided</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.sonarsource.sonarqube/sonar-scanner-protocol -->
+		<dependency>
+			<groupId>org.sonarsource.sonarqube</groupId>
+			<artifactId>sonar-scanner-protocol</artifactId>
+			<version>9.1.0.47736</version>
+		</dependency>
 	</dependencies>
 
 	<build>
