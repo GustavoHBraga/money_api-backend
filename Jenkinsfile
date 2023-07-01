@@ -1,9 +1,9 @@
 pipeline {
     agent any
     stages {
-        stage ('just test'){
+        stage ('Build maven'){
             steps {
-                bat 'echo Ok. Very good'
+                bat 'mvn clean -Dmaven.test.skip=true install'
             }
         }
     }
