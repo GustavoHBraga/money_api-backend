@@ -29,8 +29,10 @@ pipeline {
         }
         stage('Test API with Rest Assured') {
             steps{
-                git branch: 'main', url: 'https://github.com/GustavoHBraga/money-api-rest-assured.git'
-                bat 'mvn test'
+                dir('api-test'){
+                    git branch: 'main', url: 'https://github.com/GustavoHBraga/money-api-rest-assured.git'
+                    bat 'mvn test'
+                }
             }
         }
     }
