@@ -28,7 +28,7 @@ pipeline {
                 bat 'docker-compose --env-file ".env.test" up -d'
             }
         }
-        stage('Test API with Rest Assured') {
+        stage('Test API Staging with Rest Assured') {
             steps{
                 dir('api-test'){
                     git branch: 'main', url: 'https://github.com/GustavoHBraga/money-api-rest-assured.git'
