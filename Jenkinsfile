@@ -32,7 +32,7 @@ pipeline {
             steps{
                 dir('api-test'){
                     git branch: 'main', url: 'https://github.com/GustavoHBraga/money-api-rest-assured.git'
-                    bat 'mvn test'
+                    bat 'mvn clean test'
                 }
             }
         }
