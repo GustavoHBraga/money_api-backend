@@ -22,9 +22,10 @@ pipeline {
                 waitForQualityGate abortPipeline: true
             }
         }
-        stage('Deploy backend'){
+        stage('Deploy backend - Staging'){
             steps {
-                deploy adapters: [tomcat9(credentialsId: 'de45c837-4455-4bfb-878d-72508a227886', path: '', url: 'http://localhost:8888')], contextPath: 'money-backend', war: 'target/money-api-1.0.0.war'
+                //deploy adapters: [tomcat9(credentialsId: 'de45c837-4455-4bfb-878d-72508a227886', path: '', url: 'http://localhost:8888')], contextPath: 'money-backend', war: 'target/money-api-1.0.0.war'
+                bat 'docker-compose --env-file ".env.test" up -d'
             }
         }
         stage('Test API with Rest Assured') {
@@ -33,6 +34,12 @@ pipeline {
                     git branch: 'main', url: 'https://github.com/GustavoHBraga/money-api-rest-assured.git'
                     bat 'mvn test'
                 }
+            }
+        }
+        stage('Deploy backend - Live'){
+            steps {
+                //deploy adapters: [tomcat9(credentialsId: 'de45c837-4455-4bfb-878d-72508a227886', path: '', url: 'http://localhost:8888')], contextPath: 'money-backend', war: 'target/money-api-1.0.0.war'
+                bat 'docker-compose --env-file ".env.live" up -d'
             }
         }
     }
