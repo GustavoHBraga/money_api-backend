@@ -29,7 +29,6 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=money_api
       - MYSQL_USER=prod
       - MYSQL_PASSWORD=root
     ports:
