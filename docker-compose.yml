@@ -22,7 +22,7 @@ services:
     networks:
       - app-backend
     depends_on:
-      - mysql
+      - mysql      
 
   mysql:
     image: mysql:8.0.1

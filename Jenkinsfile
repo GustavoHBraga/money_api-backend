@@ -24,8 +24,9 @@ pipeline {
         }
         stage('Deploy backend - Staging'){
             steps {
-                //deploy adapters: [tomcat9(credentialsId: 'de45c837-4455-4bfb-878d-72508a227886', path: '', url: 'http://localhost:8888')], contextPath: 'money-backend', war: 'target/money-api-1.0.0.war'
-                bat 'docker-compose --env-file ".env.test" up -d'
+                bat 'docker-compose --env-file ".env.test" up mysql -d'
+                sleep(20)
+                bat 'docker-compose --env-file ".env.test" up money-backend -d'
             }
         }
         stage('Test API Staging with Rest Assured') {
@@ -38,8 +39,9 @@ pipeline {
         }
         stage('Deploy backend - Live'){
             steps {
-                //deploy adapters: [tomcat9(credentialsId: 'de45c837-4455-4bfb-878d-72508a227886', path: '', url: 'http://localhost:8888')], contextPath: 'money-backend', war: 'target/money-api-1.0.0.war'
-                bat 'docker-compose --env-file ".env.live" up -d'
+                bat 'docker-compose --env-file ".env.live" up mysql -d'
+                sleep(20)
+                bat 'docker-compose --env-file ".env.live" up money-backend -d'
             }
         }
     }
