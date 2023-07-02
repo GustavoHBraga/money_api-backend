@@ -16,6 +16,7 @@ services:
       - DATABASE_USERNAME=${DATABASE_USERNAME}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_UPDATE=${DATABASE_UPDATE}
+      - APLICATION_TYPE=${APLICATION_TYPE}
     ports:
       - ${APLICATION_PORT}:8080
     networks:
@@ -29,6 +30,7 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     environment:
       - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=money_api_${APLICATION_TYPE}
       - MYSQL_USER=prod
       - MYSQL_PASSWORD=root
     ports:
