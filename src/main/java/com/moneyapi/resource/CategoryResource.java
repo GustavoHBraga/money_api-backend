@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.function.EntityResponse;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.moneyapi.model.Category;
@@ -35,7 +34,7 @@ public class CategoryResource {
 	@GetMapping
 	public ResponseEntity<?> listAll(){
 		List<Category> categories = categoryRepository.findAll();
-		return !categories.isEmpty() ? ResponseEntity.ok(categories) : ResponseEntity.noContent().build(); 
+		return !categories.isEmpty() ? ResponseEntity.ok(categories) : ResponseEntity.ok().build(); 
 	}
 	
 	@GetMapping("/{cod}")

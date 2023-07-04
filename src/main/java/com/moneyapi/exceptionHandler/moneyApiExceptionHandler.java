@@ -77,9 +77,13 @@ public class moneyApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 		// Iterates over the FieldErrors present in the BindingResult
 		for (FieldError fieldError : bindingResult.getFieldErrors()) {
+			
 			// Retrieves the localized message for the user
-			String userMessage = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
-
+			String objectNameAndField = fieldError.getObjectName().concat(".").concat(fieldError.getField());
+			String userMessageContextByProperties = messageSource.getMessage(objectNameAndField,null, LocaleContextHolder.getLocale());
+			String userMessageContextByIssue = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+			String userMessage = userMessageContextByProperties.concat(" ").concat(userMessageContextByIssue);
+			
 			// Retrieves the default message for the developer
 			String devMessage = fieldError.toString();
 
