@@ -63,15 +63,6 @@ public class moneyApiExceptionHandler extends ResponseEntityExceptionHandler {
 	    return handleExceptionInternal(ex, errors, headers, HttpStatus.BAD_REQUEST, request);
 	}
 
-	/**
-	 * Creates a list of Error objects based on the validation errors from the
-	 * BindingResult.
-	 * 
-	 * @param bindingResult The BindingResult object containing the validation
-	 *                      errors.
-	 * @return A list of Error objects containing the error messages for the user
-	 *         and developer.
-	 */
 	private List<Error> createErrorList(BindingResult bindingResult) {
 		List<Error> errors = new ArrayList<>();
 
@@ -80,9 +71,15 @@ public class moneyApiExceptionHandler extends ResponseEntityExceptionHandler {
 			
 			// Retrieves the localized message for the user
 			String objectNameAndField = fieldError.getObjectName().concat(".").concat(fieldError.getField());
-			String userMessageContextByProperties = messageSource.getMessage(objectNameAndField,null, LocaleContextHolder.getLocale());
-			String userMessageContextByIssue = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
-			String userMessage = userMessageContextByProperties.concat(" ").concat(userMessageContextByIssue);
+			
+			// field format by Validation.properties
+			String fieldByProperties = messageSource.getMessage(objectNameAndField,null, LocaleContextHolder.getLocale());
+			
+			// Context error example: Required field, field null
+			String contextError = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+			
+			// field + Context error = Message format to User
+			String userMessage = fieldByProperties.concat(" ").concat(contextError);
 			
 			// Retrieves the default message for the developer
 			String devMessage = fieldError.toString();
