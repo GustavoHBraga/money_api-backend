@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
-@Table(name = "people")
+@Table(name = "person")
 public class Person {
 
 	@Id
@@ -71,7 +71,7 @@ public class Person {
 
 	@Override
 	public String toString() {
-		return "People [cod=" + cod + ", name=" + name + ", isActive=" + active + ", informationAdress="
+		return "Person [cod=" + cod + ", name=" + name + ", isActive=" + active + ", informationAdress="
 				+ informationAdress + "]";
 	}
 	

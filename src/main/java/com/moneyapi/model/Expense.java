@@ -54,7 +54,7 @@ public class Expense {
 	
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name = "cod_people")
+	@JoinColumn(name = "cod_person")
 	private Person person;
 
 	public Long getCod() {
