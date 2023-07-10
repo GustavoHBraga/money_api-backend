@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 public class InformationAdress {
 
 	@NotNull
-	private String adress;
+	private String address;
 	
 	@NotNull
 	private int number;
@@ -27,12 +27,12 @@ public class InformationAdress {
 	@NotNull
 	private String state;
 
-	public String getAdress() {
-		return adress;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setAdress(String adress) {
-		this.adress = adress;
+	public void setAddress(String adress) {
+		this.address = adress;
 	}
 
 	public int getNumber() {

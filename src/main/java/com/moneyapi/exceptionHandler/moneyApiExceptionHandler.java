@@ -1,11 +1,15 @@
 package com.moneyapi.exceptionHandler;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -22,7 +27,6 @@ public class moneyApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@Autowired
 	private MessageSource messageSource;
-
 	
 	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
@@ -44,14 +48,6 @@ public class moneyApiExceptionHandler extends ResponseEntityExceptionHandler {
 				request);
 	}
 
-	/**
-	 * Handles the exception that occurs when method arguments fail validation.
-	 * @param ex The MethodArgumentNotValidException that was thrown.
-	 * @param headers The HttpHeaders to be included in the response.
-	 * @param status The HttpStatusCode to be set in the response.
-	 * @param request The WebRequest object representing the current request.
-	 * @return A ResponseEntity containing the list of Error objects and the specified status code.
-	 */
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 	        HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -63,35 +59,40 @@ public class moneyApiExceptionHandler extends ResponseEntityExceptionHandler {
 	    return handleExceptionInternal(ex, errors, headers, HttpStatus.BAD_REQUEST, request);
 	}
 
+	@ExceptionHandler({ EmptyResultDataAccessException.class })
+	public ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex, WebRequest request) {
+		
+		String userMessage = messageSource.getMessage("resource.not-found", null, LocaleContextHolder.getLocale());
+		String devMessage = ex.toString();
+		
+		List<Error> erros = Arrays.asList(new Error(userMessage, devMessage));
+		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+	}
+	
+	@ExceptionHandler({ DataIntegrityViolationException.class })
+	public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
+		
+		String userMessage = messageSource.getMessage("resource.operation-not-permitted", null, LocaleContextHolder.getLocale());
+		String devMessage = ExceptionUtils.getRootCauseMessage(ex);
+		
+		List<Error> erros = Arrays.asList(new Error(userMessage, devMessage));
+		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+	}
+	
 	private List<Error> createErrorList(BindingResult bindingResult) {
 		List<Error> errors = new ArrayList<>();
 
 		// Iterates over the FieldErrors present in the BindingResult
 		for (FieldError fieldError : bindingResult.getFieldErrors()) {
 			
-			// Retrieves the localized message for the user
-			String objectNameAndField = fieldError.getObjectName().concat(".").concat(fieldError.getField());
-			
-			// field format by Validation.properties
-			String fieldByProperties = messageSource.getMessage(objectNameAndField,null, LocaleContextHolder.getLocale());
-			
-			// Context error example: Required field, field null
-			String contextError = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
-			
-			// field + Context error = Message format to User
-			String userMessage = fieldByProperties.concat(" ").concat(contextError);
-			
-			// Retrieves the default message for the developer
-			String devMessage = fieldError.toString();
-
-			// Creates a new Error object and adds it to the list of errors
-			errors.add(new Error(userMessage, devMessage));
+			String userMessage = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());  // Field (people.name) + Context(NotNull) in Messages.properties and ValidationMessages.properties
+			String devMessage = fieldError.toString();													 // Retrieves the default message for the developer
+			errors.add(new Error(userMessage, devMessage));			                                     // Creates a new Error object and adds it to the list of errors
 		}
 
 		return errors;
 	}
-
-	// Class used to join userMessage and DevMessage :)
+	
 	public static class Error {
 
 		private String userMessage;
