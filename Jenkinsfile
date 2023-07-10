@@ -22,6 +22,11 @@ pipeline {
                 waitForQualityGate abortPipeline: true
             }
         }
+        stage ('Test Unit -Junit'){
+            steps {
+                bat 'mvn test'
+            }
+        }
         stage('Deploy backend - Staging'){
             steps {
                 bat 'docker-compose --env-file ".env.test" up mysql -d'
