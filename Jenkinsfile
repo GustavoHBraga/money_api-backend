@@ -6,13 +6,18 @@ pipeline {
                 bat 'mvn clean -Dmaven.test.skip=true install'
             }
         }
+        stage ('Test Unit Junit'){
+            steps {
+                bat 'mvn test'
+            }
+        }
         stage ('SonarQube Analysis'){
             environment {
                 sonarscanner = tool 'SONAR_SCANNER'
             }
             steps {
                 withSonarQubeEnv('SONAR_LOCAL') {
-                    bat "${sonarscanner}/bin/sonar-scanner -e -Dsonar.projectKey=DeployBackend -Dsonar.projectName='DeployBackend' -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqp_5044a0212917cb95366ed4c5f2890ec9a04473cf -Dsonar.java.binaries=target -Dsonar.coverage.exclusions=**/.mvn/**,**/model/**"
+                    bat "${sonarscanner}/bin/sonar-scanner -e -Dsonar.projectKey=DeployBackend -Dsonar.projectName='DeployBackend' -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqp_5044a0212917cb95366ed4c5f2890ec9a04473cf -Dsonar.java.binaries=target -Dsonar.coverage.exclusions=**/.mvn/**,**/model/**,**/src/test/**,**Application.java"
                 }
             }
         }
@@ -20,11 +25,6 @@ pipeline {
             steps{
                 sleep(5)
                 waitForQualityGate abortPipeline: true
-            }
-        }
-        stage ('Test Unit -Junit'){
-            steps {
-                bat 'mvn test'
             }
         }
         stage('Deploy backend - Staging'){
@@ -38,7 +38,7 @@ pipeline {
             steps{
                 dir('api-test'){
                     git branch: 'main', url: 'https://github.com/GustavoHBraga/money-api-rest-assured.git'
-                    bat 'mvn clean test'
+                    bat 'mvn test'
                 }
             }
         }
