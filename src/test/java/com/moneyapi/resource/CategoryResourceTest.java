@@ -66,6 +66,23 @@ public class CategoryResourceTest {
         
     }
     @Test
+    public void testListAllEmpty() {
+    	
+    	// Defina o comportamento esperado para o repository mock
+        when(categoryRepository.findAll()).thenReturn(new ArrayList<>());
+
+        // Execute o método a ser testado
+        ResponseEntity<?> response = categoryResource.listAll();
+
+        // Verifique se o repository findAll() foi chamado
+        verify(categoryRepository, times(1)).findAll();
+
+        // Verifique se a resposta contém a lista de categorias
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        
+        
+    }
+    @Test
     public void testFindByCod() {
         // Crie uma categoria de exemplo
     	Category category = new Category();
