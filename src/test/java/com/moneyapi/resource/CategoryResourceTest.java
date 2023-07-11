@@ -39,19 +39,9 @@ public class CategoryResourceTest {
     public void testListAll() {
     	
         // Crie uma lista de categorias de exemplo
-    	List<Category> categories = new ArrayList<>();
+    	List<Category> categories = factoryCategories();
     	
-    	Category category1 = new Category();
-    	category1.setCod(1L);
-    	category1.setName("Category 1");
-    	categories.add(category1);
-        
-    	Category category2 = new Category();
-    	category2.setCod(1L);
-    	category2.setName("Category 2");
-    	categories.add(category2);
-
-        // Defina o comportamento esperado para o repository mock
+    	// Defina o comportamento esperado para o repository mock
         when(categoryRepository.findAll()).thenReturn(categories);
 
         // Execute o método a ser testado
@@ -84,10 +74,10 @@ public class CategoryResourceTest {
     }
     @Test
     public void testFindByCod() {
+    	List<Category> categories = factoryCategories();
+    	
         // Crie uma categoria de exemplo
-    	Category category = new Category();
-    	category.setCod(1L);
-    	category.setName("Category 1");
+    	Category category = categories.get(0);
     	
 
         // Defina o comportamento esperado para o repository mock
@@ -120,10 +110,10 @@ public class CategoryResourceTest {
     }
     @Test
     public void testCreate() {
+    	List<Category> categories = factoryCategories();
+    	
         // Crie uma categoria de exemplo
-    	Category category = new Category();
-    	category.setCod(1L);
-    	category.setName("Category 1");
+    	Category category = categories.get(0);
 
         // Defina o comportamento esperado para o repository mock
         when(categoryRepository.save(any(Category.class))).thenReturn(category);
@@ -149,5 +139,23 @@ public class CategoryResourceTest {
 
         // Verifique se o repository deleteById() foi chamado
         verify(categoryRepository, times(1)).deleteById(1L);
+    }
+    
+    public static List<Category> factoryCategories (){
+    	
+    	List<Category> categories = new ArrayList<>();
+    	Category category1 = new Category();
+    	category1.setCod(1L);
+    	category1.setName("Category 1");
+    	categories.add(category1);
+        
+    	Category category2 = new Category();
+    	category2.setCod(1L);
+    	category2.setName("Category 2");
+    	
+    	categories.add(category1);
+    	categories.add(category2);
+    	
+    	return categories;
     }
 }
