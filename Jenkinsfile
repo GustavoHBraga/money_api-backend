@@ -6,9 +6,9 @@ pipeline {
                 bat 'mvn clean -Dmaven.test.skip=true install'
             }
         }
-        stage ('Test Unit Junit'){
+        stage ('Test Unit'){
             steps {
-                bat 'mvn test'
+                bat 'mvn clean test install'
             }
         }
         stage ('SonarQube Analysis'){
