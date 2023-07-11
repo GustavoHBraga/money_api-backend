@@ -22,7 +22,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.moneyapi.model.Category;
 import com.moneyapi.model.InformationAdress;
 import com.moneyapi.model.Person;
 import com.moneyapi.repository.PersonRepository;
