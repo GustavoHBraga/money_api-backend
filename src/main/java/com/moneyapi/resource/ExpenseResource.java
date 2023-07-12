@@ -44,8 +44,9 @@ public class ExpenseResource {
 	private MessageSource messageSource;
 	
 	@GetMapping
-	public List<Expense> listAll(){
-		return expenseRepository.findAll();
+	public ResponseEntity<?> listAll(){
+		List<Expense> expenses = expenseRepository.findAll();
+		return !expenses.isEmpty() ? ResponseEntity.ok(expenses) : ResponseEntity.ok().build();
 	}
 	
 	@GetMapping("/{cod}")

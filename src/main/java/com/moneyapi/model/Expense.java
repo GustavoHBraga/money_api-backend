@@ -36,7 +36,7 @@ public class Expense {
 	
 	@Column(name="payment_date")
 	@JsonFormat(pattern =  "dd/MM/yyyy")
-	private LocalDate paymenteDate;
+	private LocalDate paymentDate;
 	
 	@NotNull
 	private BigDecimal amount;
@@ -87,13 +87,13 @@ public class Expense {
 	}
 
 
-	public LocalDate getPaymenteDate() {
-		return paymenteDate;
+	public LocalDate getPaymentDate() {
+		return paymentDate;
 	}
 
 
-	public void setPaymenteDate(LocalDate paymenteDate) {
-		this.paymenteDate = paymenteDate;
+	public void setPaymentDate(LocalDate paymenteDate) {
+		this.paymentDate = paymenteDate;
 	}
 
 
