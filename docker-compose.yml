@@ -27,6 +27,7 @@ services:
   mysql:
     image: mysql:8.0.1
     container_name: mysql-${APLICATION_TYPE}
+    hostname: mysql-${APLICATION_TYPE}
     command: --default-authentication-plugin=mysql_native_password
     environment:
       - MYSQL_ROOT_PASSWORD=root
