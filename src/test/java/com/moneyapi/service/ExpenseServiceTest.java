@@ -1,9 +1,7 @@
-package com.moneyapi.resource;
+package com.moneyapi.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -11,22 +9,15 @@ import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.MessageSource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import com.moneyapi.model.Category;
 import com.moneyapi.model.Expense;
@@ -34,85 +25,55 @@ import com.moneyapi.model.InformationAdress;
 import com.moneyapi.model.Person;
 import com.moneyapi.model.TypeExpense;
 import com.moneyapi.repository.ExpenseRepository;
-import com.moneyapi.service.ExpenseServiceTest;
+import com.moneyapi.repository.PersonRepository;
 import com.moneyapi.service.exception.PersonNotActiveOrNoExists;
 
-public class ExpenseResourceTest {
+public class ExpenseServiceTest {
+	
+	@Mock
+    private ExpenseRepository expenseRepository;
 
-	@Mock
-	private ExpenseRepository expenseRepository;
-	
-	@Mock
-	private ApplicationEventPublisher publisher;
-	
-	@Mock
-	private ExpenseServiceTest expenseService;
-	
-	@Mock
-	private MessageSource messageSource;
-	
-	@InjectMocks
-	private ExpenseResource expenseResource;
-	
-	@BeforeEach
+    @Mock
+    private PersonRepository personRepository;
+
+    @InjectMocks
+    private ExpenseService expenseService;
+
+    @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
     }
-	
-	@Test
-	public void testListAll() {
-		List<Expense> expenses = factoryExpense();
-		
-		when(expenseRepository.findAll()).thenReturn(expenses);
-		ResponseEntity<?> response = expenseResource.listAll();
-		verify(expenseRepository,times(1)).findAll();
-		
-		assertEquals(HttpStatus.OK, response.getStatusCode());
-		assertEquals(expenses,response.getBody());
-		
-	}
-	@Test
-	public void testListEmpty() {
-		
-		when(expenseRepository.findAll()).thenReturn(new ArrayList<>());
-		ResponseEntity<?> response = expenseResource.listAll();
-		verify(expenseRepository,times(1)).findAll();
-		
-		assertEquals(HttpStatus.OK, response.getStatusCode());
-		
-	}
-	
-	@Test
-	public void testFindbycod() {
-		List<Expense> expenses = factoryExpense();
+    
+    @Test
+    public void testSaveExpense() {
+        List<Expense> expenses = factoryExpense();
 		Expense expense = expenses.get(0);
 		
-		when(expenseRepository.findById(1L)).thenReturn(Optional.of(expense));
+		// check if person exists or not active - Then inject expense example to this function
+		when(personRepository.findById(1L)).thenReturn(Optional.of(expense.getPerson()));
 		
-		ResponseEntity<?> response = expenseResource.findbycod(1L);
-		
-		verify(expenseRepository,times(1)).findById(1L);
-		
-		assertEquals(HttpStatus.OK, response.getStatusCode());
-		assertEquals(expense, response.getBody());
-		
-	}
-	@Test
-	public void testFindbycodNotFound() {
-		List<Expense> expenses = factoryExpense();
-		Expense expense = expenses.get(0);
-		
-		when(expenseRepository.findById(1L)).thenReturn(Optional.of(expense));
-		
-		ResponseEntity<?> response = expenseResource.findbycod(2L);
-		
-		verify(expenseRepository,times(1)).findById(2L);
-		
-		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());		
-		
-	}
-	
-	public static List<Expense> factoryExpense(){
+		when(expenseRepository.save(expense)).thenReturn(expense);
+
+        Expense savedExpense = expenseService.save(expense);
+
+        verify(expenseRepository, times(1)).save(expense);
+
+        assertEquals(expense, savedExpense);
+
+    }
+    @Test
+    public void testSaveExpensePersonNotActive() {
+        // Crie um Expense de exemplo
+    	List<Expense> expenses = factoryExpense();
+		Expense expense = expenses.get(1);
+
+        when(personRepository.findById(1L)).thenReturn(Optional.of(expense.getPerson()));
+        verify(expenseRepository, never()).save(expense);
+        assertThrows(PersonNotActiveOrNoExists.class, () -> expenseService.save(expense));
+
+        
+    }
+    public static List<Expense> factoryExpense(){
 		List<Expense> expenses = new ArrayList<>();
 		List<Category> categories = factoryCategories();
 		List<Person> people = factoryPeople();
