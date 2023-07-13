@@ -117,6 +117,19 @@ public class PersonServiceTest {
 		address_1.setState("Sao Paulo");
 		person_1.setInformationAdress(address_1);
 		
+		Person person_2 = new Person();
+		person_2.setCod(2L);
+		person_2.setName("Claudio");
+		person_2.setActive(true);
+		InformationAdress address_2 = new InformationAdress();
+		address_2.setAddress("Rua rio paranapanema");
+		address_2.setCep("06220250");
+		address_2.setCity("OSASCO");
+		address_2.setState("Sao Paulo");
+		person_2.setInformationAdress(address_1);
+		
+		people.add(person_1);
+		people.add(person_2);
 		return people;
 		
 	}
