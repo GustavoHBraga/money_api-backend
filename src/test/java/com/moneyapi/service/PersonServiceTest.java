@@ -82,6 +82,7 @@ public class PersonServiceTest {
 	
 	@Test
 	public void testSourcePerson() {
+
 		List<Person> people = factoryPeople();
 		Person person = people.get(0);
 		
@@ -91,6 +92,7 @@ public class PersonServiceTest {
 		assertEquals(person, personFind);
 		
 	}
+	
 	@Test
 	public void testSourcePersonEmptyResult() {
 		List<Person> people = factoryPeople();
