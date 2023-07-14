@@ -47,4 +47,4 @@ networks:
 volumes:
   db_data:
     external: true
-    name: money_backend${APLICATION_TYPE:-test}-mysql
+    name: money_backend_${APLICATION_TYPE:-test}-mysql
