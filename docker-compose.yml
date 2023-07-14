@@ -36,8 +36,15 @@ services:
       - MYSQL_PASSWORD=root
     ports:
       - ${DATABASE_PORT}:3306
+    volumes:
+      - db_data:/var/lib/mysql
     networks:
       - app-backend
 
 networks:
   app-backend:  
+
+volumes:
+  db_data:
+    external: true
+    name: money_backend${APLICATION_TYPE:-test}-mysql
