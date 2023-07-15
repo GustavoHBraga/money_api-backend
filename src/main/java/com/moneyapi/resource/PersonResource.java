@@ -81,7 +81,7 @@ public class PersonResource {
 		return ResponseEntity.ok(personSave);
 	}
 	
-	@PutMapping("/{cod}/adress")
+	@PutMapping("/{cod}/address")
 	public ResponseEntity<Person> updateAdress(@PathVariable Long cod, @Valid @RequestBody InformationAdress adress ){
 		Person personSave = personService.updateAdress(cod, adress);
 		return ResponseEntity.ok(personSave);
