@@ -69,6 +69,16 @@ public class moneyApiExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
 	
+	@ExceptionHandler({ IllegalArgumentException.class })
+	public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request) {
+		
+		String userMessage = messageSource.getMessage("resource.operation-argument-invalid", null, LocaleContextHolder.getLocale());
+		String devMessage = ExceptionUtils.getRootCauseMessage(ex);
+		
+		List<Error> erros = Arrays.asList(new Error(userMessage, devMessage));
+		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+	}
+	
 	@ExceptionHandler({ DataIntegrityViolationException.class })
 	public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
 		

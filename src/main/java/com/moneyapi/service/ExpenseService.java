@@ -22,7 +22,8 @@ public class ExpenseService {
 		
 		// check if person exists or not active
 		Person persoCheck = personRepository.findById(expense.getPerson().getCod()).orElse(null);
-		if(persoCheck.isNotActive() || persoCheck == null) {
+		
+		if(persoCheck == null || persoCheck.isNotActive()) {
 			throw new PersonNotActiveOrNoExists();
 		}
 		
