@@ -29,8 +29,6 @@ pipeline {
         }
         stage('Deploy backend - Staging'){
             steps {
-                bat 'docker rmi -f deployfull-pipeline-money-backend'
-                sleep(10)
                 bat 'docker-compose --env-file ".env.test" up mysql -d'
                 sleep(20)
                 bat 'docker-compose --env-file ".env.test" up money-backend -d --force-recreate'
