@@ -8,7 +8,7 @@ pipeline {
         }
         stage ('Test Unit'){
             steps {
-                bat 'mvn clean test install'
+                bat 'mvn clean test'
             }
         }
         stage ('SonarQube Analysis'){
@@ -38,7 +38,7 @@ pipeline {
             steps{
                 dir('api-test'){
                     git branch: 'main', url: 'https://github.com/GustavoHBraga/money-api-rest-assured.git'
-                    bat 'mvn clean test install'
+                    bat 'mvn clean test'
                 }
             }
         }
