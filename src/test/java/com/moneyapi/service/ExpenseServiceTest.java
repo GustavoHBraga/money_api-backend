@@ -73,6 +73,18 @@ public class ExpenseServiceTest {
 
         
     }
+    
+    @Test
+    public void testErrorExpensePersonNotNull() {
+        // Crie um Expense de exemplo
+    	List<Expense> expenses = factoryExpense();
+		Expense expense = expenses.get(1);
+
+        when(personRepository.findById(null)).thenReturn(null);
+        verify(expenseRepository, never()).save(expense);
+        assertThrows(PersonNotActiveOrNoExists.class, () -> expenseService.save(expense));
+
+    }
     public static List<Expense> factoryExpense(){
 		List<Expense> expenses = new ArrayList<>();
 		List<Category> categories = factoryCategories();
