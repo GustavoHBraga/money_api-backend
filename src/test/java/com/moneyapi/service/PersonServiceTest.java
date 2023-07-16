@@ -76,7 +76,7 @@ public class PersonServiceTest {
 		when(personRepository.findById(personCurrent.getCod())).thenReturn(Optional.of(personCurrent));
 		when(personRepository.save(any(Person.class))).thenReturn(personNew);
 		
-		Person personUpdate = personService.updateAdress(personCurrent.getCod(), personNew.getInformationAdress());
+		Person personUpdate = personService.updateAddress(personCurrent.getCod(), personNew.getInformationAdress());
 		assertEquals(personNew, personUpdate);
 	}
 	

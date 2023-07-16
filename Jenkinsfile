@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage ('Build maven'){
             steps {
-                bat 'mvn clean -Dmaven.test.skip=true install'
+                bat 'mvn clean -DskipTests=true install'
             }
         }
         stage ('Test Unit'){

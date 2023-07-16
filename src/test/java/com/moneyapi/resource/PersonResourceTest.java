@@ -147,9 +147,9 @@ public class PersonResourceTest {
 		Person personUpdate = people.get(1);
 		InformationAdress newAddress = people.get(1).getInformationAdress();
 		
-		when(personService.updateAdress(person.getCod(),newAddress)).thenReturn(personUpdate);
+		when(personService.updateAddress(person.getCod(),newAddress)).thenReturn(personUpdate);
 		ResponseEntity<?> response = personResource.updateAdress(person.getCod(),newAddress);
-		verify(personService,times(1)).updateAdress(person.getCod(), newAddress);
+		verify(personService,times(1)).updateAddress(person.getCod(), newAddress);
 		
 		assertEquals(HttpStatus.OK,response.getStatusCode());
 		assertEquals(personUpdate,response.getBody());

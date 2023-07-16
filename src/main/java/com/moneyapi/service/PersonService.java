@@ -29,7 +29,7 @@ public class PersonService {
 		return this.personRepository.save(peopleSave);
 	}
 	
-	public Person updateAdress(Long cod, InformationAdress adress) {
+	public Person updateAddress(Long cod, InformationAdress adress) {
 			
 		Person peopleSave = sourcePerson(cod);
 		peopleSave.setInformationAdress(adress);
