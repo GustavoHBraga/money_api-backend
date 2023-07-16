@@ -31,7 +31,7 @@ pipeline {
             steps {
                 bat 'docker-compose --env-file ".env.test" up mysql -d'
                 sleep(20)
-                bat 'docker-compose --env-file ".env.test" up money-backend -d'
+                bat 'docker-compose --env-file ".env.test" up money-backend -d --force-recreate'
             }
         }
         stage('Test API Staging with Rest Assured') {
@@ -46,7 +46,7 @@ pipeline {
             steps {
                 bat 'docker-compose --env-file ".env.live" up mysql -d'
                 sleep(20)
-                bat 'docker-compose --env-file ".env.live" up money-backend -d'
+                bat 'docker-compose --env-file ".env.live" up money-backend -d --force-recreate'
             }
         }
     }
