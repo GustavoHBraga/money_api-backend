@@ -35,7 +35,7 @@ public class CategoryResourceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
+    /*@Test
     public void testListAll() {
     	
         // Crie uma lista de categorias de exemplo
@@ -71,7 +71,7 @@ public class CategoryResourceTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         
         
-    }
+    }*/
     @Test
     public void testFindByCod() {
     	List<Category> categories = factoryCategories();

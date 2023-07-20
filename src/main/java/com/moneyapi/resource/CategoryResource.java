@@ -1,12 +1,12 @@
 package com.moneyapi.resource;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.moneyapi.event.ResourceCreatedEvent;
 import com.moneyapi.model.Category;
 import com.moneyapi.repository.CategoryRepository;
+import com.moneyapi.repository.filter.CategoryFilter;
 
 
 @RestController
@@ -34,9 +35,8 @@ public class CategoryResource {
 	private ApplicationEventPublisher publisher;
 	
 	@GetMapping
-	public ResponseEntity<?> listAll(){
-		List<Category> categories = categoryRepository.findAll();
-		return !categories.isEmpty() ? ResponseEntity.ok(categories) : ResponseEntity.ok().build(); 
+	public Page<Category> filter(CategoryFilter categoryFilter, Pageable pageable){
+		return categoryRepository.filter(categoryFilter, pageable);
 	}
 	
 	@GetMapping("/{cod}")

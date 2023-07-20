@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,6 +26,7 @@ import com.moneyapi.event.ResourceCreatedEvent;
 import com.moneyapi.exceptionHandler.moneyApiExceptionHandler.Error;
 import com.moneyapi.model.Expense;
 import com.moneyapi.repository.ExpenseRepository;
+import com.moneyapi.repository.filter.ExpenseFilter;
 import com.moneyapi.service.ExpenseService;
 import com.moneyapi.service.exception.PersonNotActiveOrNoExists;
 
@@ -44,9 +47,8 @@ public class ExpenseResource {
 	private MessageSource messageSource;
 	
 	@GetMapping
-	public ResponseEntity<?> listAll(){
-		List<Expense> expenses = expenseRepository.findAll();
-		return !expenses.isEmpty() ? ResponseEntity.ok(expenses) : ResponseEntity.ok().build();
+	public Page<Expense> filter(ExpenseFilter expenseFilter, Pageable pageable){
+		return expenseRepository.filter(expenseFilter, pageable);
 	}
 	
 	@GetMapping("/{cod}")

@@ -62,7 +62,7 @@ public class ExpenseResourceTest {
         MockitoAnnotations.openMocks(this);
     }
 	
-	@Test
+	/*@Test
 	public void testListAll() {
 		List<Expense> expenses = factoryExpense();
 		
@@ -73,8 +73,8 @@ public class ExpenseResourceTest {
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertEquals(expenses,response.getBody());
 		
-	}
-	@Test
+	}*/
+	/*@Test
 	public void testListEmpty() {
 		
 		when(expenseRepository.findAll()).thenReturn(new ArrayList<>());
@@ -83,7 +83,7 @@ public class ExpenseResourceTest {
 		
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		
-	}
+	}*/
 	
 	@Test
 	public void testFindbycod() {
