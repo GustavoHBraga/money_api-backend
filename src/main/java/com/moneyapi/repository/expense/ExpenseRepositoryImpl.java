@@ -13,12 +13,12 @@ import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import com.moneyapi.model.Expense;
-import com.moneyapi.model.Expense_;
 import com.moneyapi.repository.filter.ExpenseFilter;
+
 
 public class ExpenseRepositoryImpl implements ExpenseRepositoryQuery{
 
@@ -46,17 +46,17 @@ public class ExpenseRepositoryImpl implements ExpenseRepositoryQuery{
 		
 		if(!ObjectUtils.isEmpty(expenseFilter.getDescription())) {
 			predicates.add(builder.like(
-					builder.lower(root.get(Expense_.description)), "%" + expenseFilter.getDescription().toLowerCase() + "%"));
+					builder.lower(root.get("description")), "%" + expenseFilter.getDescription().toLowerCase() + "%"));
 		}
 		
 		if (!ObjectUtils.isEmpty(expenseFilter.getDueDateMin())) {
 			predicates.add(
-					builder.greaterThanOrEqualTo(root.get(Expense_.dueDate),expenseFilter.getDueDateMin()));
+					builder.greaterThanOrEqualTo(root.get("dueDate"),expenseFilter.getDueDateMin()));
 		}
 		
 		if (!ObjectUtils.isEmpty(expenseFilter.getDueDateMax())) {
 			predicates.add(
-					builder.lessThanOrEqualTo(root.get(Expense_.dueDate), expenseFilter.getDueDateMax()));
+					builder.lessThanOrEqualTo(root.get("dueDate"), expenseFilter.getDueDateMax()));
 		}
 		
 		return predicates.toArray(new Predicate[predicates.size()]);
