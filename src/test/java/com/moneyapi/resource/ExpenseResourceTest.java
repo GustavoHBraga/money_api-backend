@@ -27,6 +27,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -36,6 +39,8 @@ import com.moneyapi.model.InformationAdress;
 import com.moneyapi.model.Person;
 import com.moneyapi.model.TypeExpense;
 import com.moneyapi.repository.ExpenseRepository;
+import com.moneyapi.repository.filter.CategoryFilter;
+import com.moneyapi.repository.filter.ExpenseFilter;
 import com.moneyapi.service.ExpenseService;
 import com.moneyapi.service.exception.PersonNotActiveOrNoExists;
 import com.moneyapi.exceptionHandler.moneyApiExceptionHandler.Error;
@@ -62,28 +67,31 @@ public class ExpenseResourceTest {
         MockitoAnnotations.openMocks(this);
     }
 	
-	/*@Test
-	public void testListAll() {
-		List<Expense> expenses = factoryExpense();
-		
-		when(expenseRepository.findAll()).thenReturn(expenses);
-		ResponseEntity<?> response = expenseResource.listAll();
-		verify(expenseRepository,times(1)).findAll();
-		
-		assertEquals(HttpStatus.OK, response.getStatusCode());
-		assertEquals(expenses,response.getBody());
-		
-	}*/
-	/*@Test
-	public void testListEmpty() {
-		
-		when(expenseRepository.findAll()).thenReturn(new ArrayList<>());
-		ResponseEntity<?> response = expenseResource.listAll();
-		verify(expenseRepository,times(1)).findAll();
-		
-		assertEquals(HttpStatus.OK, response.getStatusCode());
-		
-	}*/
+	@Test
+    public void testFilterExpenses() {
+        
+    	// Mock dos parâmetros de entrada
+        ExpenseFilter expenseFilter = new ExpenseFilter();
+        Pageable pageable = Pageable.unpaged(); // Para simplificar, vamos usar uma paginação não paginada
+
+        // Mock dos dados de retorno do repositório
+        List<Expense> expenses = factoryExpense();
+        Page<Expense> expectedPage = new PageImpl<>(expenses);
+
+        // Configuração do mock do repositório
+        when(expenseRepository.filter(expenseFilter, pageable)).thenReturn(expectedPage);
+
+        // Chamada do método que está sendo testado
+        Page<Expense> resultPage = expenseResource.filter(expenseFilter, pageable);
+
+        // Verificação dos resultados
+        assertEquals(expectedPage.getContent().size(), resultPage.getContent().size());
+        
+        // Verifique outros atributos se necessário
+
+        // Verifica se o método do repositório foi chamado corretamente
+        verify(expenseRepository, times(1)).filter(expenseFilter, pageable);
+    }
 	
 	@Test
 	public void testFindbycod() {

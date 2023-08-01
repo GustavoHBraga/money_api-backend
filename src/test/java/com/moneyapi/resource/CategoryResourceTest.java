@@ -2,12 +2,17 @@ package com.moneyapi.resource;
 import com.moneyapi.event.ResourceCreatedEvent;
 import com.moneyapi.model.Category;
 import com.moneyapi.repository.CategoryRepository;
+import com.moneyapi.repository.filter.CategoryFilter;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -35,43 +40,31 @@ public class CategoryResourceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    /*@Test
-    public void testListAll() {
-    	
-        // Crie uma lista de categorias de exemplo
-    	List<Category> categories = factoryCategories();
-    	
-    	// Defina o comportamento esperado para o repository mock
-        when(categoryRepository.findAll()).thenReturn(categories);
-
-        // Execute o método a ser testado
-        ResponseEntity<?> response = categoryResource.listAll();
-
-        // Verifique se o repository findAll() foi chamado
-        verify(categoryRepository, times(1)).findAll();
-
-        // Verifique se a resposta contém a lista de categorias
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(categories, response.getBody());
-        
-    }
     @Test
-    public void testListAllEmpty() {
-    	
-    	// Defina o comportamento esperado para o repository mock
-        when(categoryRepository.findAll()).thenReturn(new ArrayList<>());
-
-        // Execute o método a ser testado
-        ResponseEntity<?> response = categoryResource.listAll();
-
-        // Verifique se o repository findAll() foi chamado
-        verify(categoryRepository, times(1)).findAll();
-
-        // Verifique se a resposta contém a lista de categorias
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+    public void testFilterCategories() {
         
+    	// Mock dos parâmetros de entrada
+        CategoryFilter categoryFilter = new CategoryFilter();
+        Pageable pageable = Pageable.unpaged(); // Para simplificar, vamos usar uma paginação não paginada
+
+        // Mock dos dados de retorno do repositório
+        List<Category> categories = factoryCategories();
+        Page<Category> expectedPage = new PageImpl<>(categories);
+
+        // Configuração do mock do repositório
+        when(categoryRepository.filter(categoryFilter, pageable)).thenReturn(expectedPage);
+
+        // Chamada do método que está sendo testado
+        Page<Category> resultPage = categoryResource.filter(categoryFilter, pageable);
+
+        // Verificação dos resultados
+        assertEquals(expectedPage.getContent().size(), resultPage.getContent().size());
         
-    }*/
+        // Verifique outros atributos se necessário
+
+        // Verifica se o método do repositório foi chamado corretamente
+        verify(categoryRepository, times(1)).filter(categoryFilter, pageable);
+    }
     @Test
     public void testFindByCod() {
     	List<Category> categories = factoryCategories();
