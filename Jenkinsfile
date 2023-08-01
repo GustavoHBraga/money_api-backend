@@ -21,6 +21,7 @@ pipeline {
                 }
             }
         }
+        
         stage('Quality Gate'){
             steps{
                 sleep(5)
