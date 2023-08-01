@@ -78,6 +78,12 @@
 		    <artifactId>hibernate-jpamodelgen</artifactId>
 		    <scope>provided</scope>
 		</dependency>
+		
+		<!-- Security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 	</dependencies>
 	
 
